@@ -1,22 +1,14 @@
-/**
- * Questa classe è il nostro primo thread e consentirà la simulazione di un cavallo
- * in corsa parallelamente con altri della stessa specie
- * @author rossi
- * @version 1.0
- */
 public class Cavallo extends Thread {
 
-    private final String name;
+
+
     private int lentezza;
+    private boolean caduto = false;
 
     public Cavallo(String name) {
-        super();
-        this.name = name;
+        super(name); // Passa il nome al costruttore di Thread
     }
 
-    /**
-     * Metodo per impostare la lentezza (in millisecondi)
-     */
     public void setLentezza(int lentezza) {
         this.lentezza = lentezza;
     }
@@ -25,23 +17,28 @@ public class Cavallo extends Thread {
         return lentezza;
     }
 
-    /**
-     * Override del metodo run
-     */
+    public boolean isCaduto() {
+        return caduto;
+    }
+
     @Override
     public void run() {
-        System.out.println("Cavallo " + name + " comincia il suo galoppo con priorità: " + getPriority());
+        System.out.println("Cavallo " + getName() + " comincia il suo galoppo con priorità: " + getPriority());
 
         for (int i = 1; i <= 10; i++) {
             try {
-                sleep(lentezza);
+                Thread.sleep(lentezza);
             } catch (InterruptedException e) {
-                System.out.println("Cavallo " + name + " è stato interrotto.");
+                System.out.println("❌ Cavallo " + getName() + " è caduto e non finisce la corsa!");
+                caduto = true;
+                return;
             }
 
-            System.out.println(name + " cavalca - passo: " + i);
+            System.out.println(getName() + " cavalca - passo: " + i);
         }
 
-        System.out.println("Cavallo " + name + " ha finito la corsa!");
+        if (!caduto) {
+            System.out.println("🏁 Cavallo " + getName() + " ha finito la corsa!");
+        }
     }
 }

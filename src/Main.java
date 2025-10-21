@@ -1,55 +1,38 @@
 import java.util.Scanner;
-
+import java.util.Random;
 
 public class Main {
 
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
 
-    /**punto di inizio dell'applicazione
-     * thread padre
-     */
-public static void main(String[] args){
+        Cavallo[] cavalli = new Cavallo[5];
+        cavalli[0] = new Cavallo("Fulmine");
+        cavalli[1] = new Cavallo("Lampo");
+        cavalli[2] = new Cavallo("Rose");
+        cavalli[3] = new Cavallo("Astra");
+        cavalli[4] = new Cavallo("Rambo");
 
-    Scanner input = new Scanner(System.in);
+        for (Cavallo cavallo : cavalli) {
+            System.out.println("Inserisci la lentezza di " + cavallo.getName());
+            int tmp = input.nextInt();
+            cavallo.setLentezza(tmp);
+        }
 
-Cavallo fulmine= new Cavallo("Fulmine");
-Cavallo lampo= new Cavallo("Lampo");
-Cavallo rose = new Cavallo("Rose");
-Cavallo astra = new Cavallo("Astra");
-Cavallo rambo= new Cavallo("Rambo");
+        // Seleziona un cavallo casuale da interrompere
+        Random rand = new Random();
+        int indexCavalloDaInterrompere = rand.nextInt(cavalli.length);
+        Cavallo cavalloDaInterrompere = cavalli[indexCavalloDaInterrompere];
 
+        System.out.println("⚠️ Il cavallo che potrebbe cadere è: " + cavalloDaInterrompere.getName());
 
-//rose.setPriority(Thread.MIN_PRIORITY);
-//astra.setPriority(Thread.MAX_PRIORITY);
+        // Avvia il thread "Tilt" che interrompe il cavallo selezionato dopo un po'
+        Thread tilt = new Thread(new Tilt(cavalloDaInterrompere));
+        tilt.start();
 
-System.out.println("Inserisci la lentezza di fulmine");
-int tmp=input.nextInt();
-fulmine.setLentezza(tmp);
-
-
-
-    System.out.println("Inserisci la lentezza di lampo");
-    tmp=input.nextInt();
-    lampo.setLentezza(tmp);
-
-
-    System.out.println("Inserisci la lentezza di rose");
-   tmp=input.nextInt();
-    rose.setLentezza(tmp);
-
-
-    System.out.println("Inserisci la lentezza di astra");
-    tmp=input.nextInt();
-    astra.setLentezza(tmp);
-
-    System.out.println("Inserisci la lentezza di rambo");
-    tmp=input.nextInt();
-    rambo.setLentezza(tmp);
-
-    fulmine.start();
-    lampo.start();
-    rose.start();
-    astra.start();
-    rambo.start();
-
+        // Avvia tutti i cavalli
+        for (Cavallo cavallo : cavalli) {
+            cavallo.start();
+        }
     }
 }
