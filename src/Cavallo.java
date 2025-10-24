@@ -1,12 +1,10 @@
 public class Cavallo extends Thread {
 
-
-
     private int lentezza;
     private boolean caduto = false;
 
     public Cavallo(String name) {
-        super(name); // Passa il nome al costruttore di Thread
+        super(name);
     }
 
     public void setLentezza(int lentezza) {
@@ -26,6 +24,13 @@ public class Cavallo extends Thread {
         System.out.println("Cavallo " + getName() + " comincia il suo galoppo con priorità: " + getPriority());
 
         for (int i = 1; i <= 10; i++) {
+            // 🧩 Controllo manuale dell'interruzione
+            if (Thread.interrupted()) {
+                System.out.println("❌ Cavallo " + getName() + " è caduto improvvisamente!");
+                caduto = true;
+                return;
+            }
+
             try {
                 Thread.sleep(lentezza);
             } catch (InterruptedException e) {
